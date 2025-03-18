@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'testimonial-list.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Testimonials</h1>
+
+        <div class="featured-testimonial">
+            <h2 id="featured-testimonial">Featured Testimonial</h2>
+            {% if top_testimonial %}
+                <div class="testimonial-card">
+                    {% if top_testimonial.user.profile_picture %}
+                        <img src="{{ top_testimonial.user.profile_picture.url }}" alt="Profile Picture" class="profile-pic">
+                    {% endif %}
+                    <strong>{{ top_testimonial.user.username }}</strong> ({{ top_testimonial.created_at|date:"F j, Y" }}):
+                    <p class="testimonial-text">{{ top_testimonial.text }}</p>
+        
+                    {% if top_testimonial.image %}
+                        <img src="{{ top_testimonial.image.url }}" alt="Testimonial Image"/>
+                    {% endif %}
+        
+                    <div class="like-count">❤️ {{ top_testimonial.likes.count }} Likes</div>
+                    <div class="button-container">
+                        <a href="{% url 'testimonial_detail' top_testimonial.id %}" class="button">See more</a>
+                    </div>
+                </div>
+            {% else %}
+                <p>No testimonials yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="testimonials-list">
+            <ul>
+                {% for testimonial in testimonials %}
+                <li>
+                    {% if testimonial.user.profile_picture %}
+                        <img src="{{ testimonial.user.profile_picture.url }}" alt="Profile Picture" class="profile-pic">
+                    {% endif %}
+                    
+                    <strong>{{ testimonial.user.username }}</strong> ({{ testimonial.created_at|date:"F j, Y" }}): 
+                    <p class="testimonial-text" >{{ testimonial.text }}</p>
+                    
+                    {% if testimonial.image %}
+                        <img src="{{ testimonial.image.url }}" alt="Testimonial Image" />
+                    {% endif %}
+                    
+                    <div class="button-container">
+                        <a href="{% url 'testimonial_detail' testimonial.id %}" class="button">See more</a>
+                    </div>
+                </li>
+            {% empty %}
+                <li>No testimonials yet.</li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <div class="button-container">
+            <a href="{% url 'submit_testimonial' %}" class="button">Submit a Testimonial</a>
+            <a href="{% url 'home' %}" class="button">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

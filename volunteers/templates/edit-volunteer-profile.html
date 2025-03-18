@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'edit-volunteer-profile.css' %}">
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2>Profile Information</h2>
+        <div class="form-group">
+            {{ profile_form.as_p }}
+        </div>
+
+        <h2>Volunteer Preferences</h2>
+        <div class="form-group">
+            {{ preferences_form.as_p }}
+        </div>
+
+        <h2>Profile Privacy</h2>
+        <div class="privacy-section">
+            {{ privacy_form.as_p }}
+        </div>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</body>
+</html>

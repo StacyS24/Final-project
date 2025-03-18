@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Sign-Up</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'volunteer-sign-up.css' %}">
+</head>
+<body>
+    <h1 id="heading">Volunteer Sign-Up</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <h2>Personal Information</h2>
+        {{ user_form.as_p }}
+
+        
+        <h2>Volunteer Preferences</h2>
+        {{ preferences_form.as_p }}
+
+      
+        {% if user_form.errors %}
+            <div style="color:red;">
+                {{ user_form.errors }}
+            </div>
+        {% endif %}
+       
+        <button type="submit">Sign Up</button>
+    </form>
+</body>
+
+
+
+

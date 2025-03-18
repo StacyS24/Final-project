@@ -1,0 +1,73 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #e0f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 60%;
+    max-width: 800px;
+    background-color: #fafafa;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #00796b;
+    font-size: 1.8rem;
+}
+
+.conversations {
+    width: 100%;
+    list-style-type: none;
+    padding: 0;
+}
+
+.conversation {
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.conversation .sender {
+    font-weight: bold;
+    color: #00796b;
+}
+
+.conversation .last-message {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.conversation .timestamp {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.message-link {
+    text-decoration: none;
+    color: #00796b;
+}
+
+.message-link:hover {
+    color: #004d40;
+}
+
+li {
+    list-style-type: none;
+}

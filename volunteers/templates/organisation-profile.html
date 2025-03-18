@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organisation Profile</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'organisation-profile.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ organisation.organisation_name }}'s Profile</h1>
+
+        <!-- Organisation logo -->
+         <div class="organisation-logo">
+            {% if organisation.logo %}
+                <img src="{{ organisation.logo.url }}" alt="{{ organisation.name }}'s Logo" id = 'organisation-logo-img'>
+            {% else %}
+                <p>No logo available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Organisation Information -->
+        <div class="organisation-info">
+            <p><strong>Website:</strong> <a href="{{ organisation.website_url }}" target="_blank">{{ organisation.website_url }}</a></p>
+            <p><strong>Mission Statement:</strong> {{ organisation.mission_statement }}</p>
+            <p><strong>Cause Categories:</strong> {{ cause_categories|join:", " }}</p>
+            <p><strong>Organisation Size:</strong> {{ organisation.organisation_size }}</p>
+        </div>
+
+        <div class="organisation-links">
+            <a href="{% url 'edit-organisation-profile' %}">Edit profile</a>
+            <a href="{% url 'log-out' %}">Log out</a>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'post-volunteer-oppourtunity' %}">Post volunteer oppourtunity</a>
+            <a href="{% url 'view_messages' %}">View Messages</a>
+        </div>
+
+
+        <h2>Your Volunteer Opportunities</h2>
+        {% if opportunities %}
+            <ul class="opportunity-list">
+                {% for opportunity in opportunities %}
+                    <li class="opportunity-item">  
+                        <h3><a href="{% url 'opportunity-detail' opportunity.id %}">{{ opportunity.title }}</a></h3>
+                        <p>{{ opportunity.description }}</p>
+                        <p><strong>Location:</strong> {{ opportunity.location }}</p>
+                        <p><strong>Date:</strong> {{ opportunity.date }}</p>
+                        <p><strong>Skills Required:</strong> {{ opportunity.skills_required|join:", " }}</p>
+                        <p><strong>Commitment Level:</strong> {{ opportunity.commitment_level }}</p>
+                        <p><strong>Remote:</strong> {{ opportunity.remote|yesno:"Yes,No" }}</p>
+                    <a href="{% url 'opportunity-detail' opportunity.id %}">View Details</a>
+                {% endfor %}
+            </li>
+            </ul>
+        {% else %}
+            <p>No volunteer opportunities posted yet.</p>
+        {% endif %}
+
+    <div class="notification" >
+        <h2>Notifications</h2>
+        <ul >
+            {% for notification in notifications %}
+                <li>
+                    {{ notification.message }}
+                    <a href="{% url 'mark_notification_as_read' notification.id %}">Mark as read</a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% if not notifications%}
+        <p> No new notifications</p>
+        {%endif%}
+    </div>
+    
+    </div>
+</body>
+</html>

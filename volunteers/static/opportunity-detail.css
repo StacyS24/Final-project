@@ -1,0 +1,118 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #00796b;
+}
+
+#delete-button {
+    margin-top: 20px; 
+    text-align: center; 
+    float: right;
+}
+
+#delete-opportunity{
+    background-color: #e53935;
+    color: white; 
+    border: none; 
+    border-radius: 4px; 
+    padding: 10px 10px; 
+    cursor: pointer; 
+    transition: background-color 0.3s;
+}
+
+.opportunity-details {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.opportunity-details p {
+    margin: 10px 0;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.opportunity-details strong {
+    font-weight: bold;
+}
+
+.opportunity-details a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #00796b;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.opportunity-details a:hover {
+    background-color: #005b4f;
+}
+
+.opportunity-details form {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.opportunity-details form button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #00796b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.opportunity-details form button:hover {
+    background-color: #005b4f;
+}
+
+.volunteer-list ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.volunteer-list li {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f1f1f1;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.volunteer-list a {
+    font-weight: bold;
+    color: lightblue;
+    text-decoration: none;
+}
+
+.volunteer-list a:hover {
+    color: lightblue;
+}
+
+
+@media (max-width: 768px) {
+    .opportunity-details {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    .opportunity-details p {
+        font-size: 0.9rem;
+    }
+}

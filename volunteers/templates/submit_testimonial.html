@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Testimonial</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'submit-testimonial.css' %}">
+</head>
+<body>
+    <div class="testimonial-container">
+        <h1 class="testimonial-header">Submit a Testimonial</h1>
+        <form method="POST" enctype="multipart/form-data" class="testimonial-form">  
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+        <a href="{% url 'testimonial_list' %}" class="back-link">Back to Testimonials</a>
+    </div>
+</body>
+</html>

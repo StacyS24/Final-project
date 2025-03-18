@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+</head>
+<body>
+    <p id="heading">Are you a volunteer or an organisation?</p>   
+    <!-- Sign-Up Links -->
+    <div class="sign-up-container">
+        <a class="sign-up" href="{% url 'volunteer-sign-up' %}">Volunteer Sign-Up</a>
+        <a class="sign-up" href="{% url 'organisation-sign-up' %}">Organisation Sign-Up</a>
+    </div>
+    <p>Already have an account? <a href="{% url 'login' %}">Log-in</a></p>
+</body>
+</html>

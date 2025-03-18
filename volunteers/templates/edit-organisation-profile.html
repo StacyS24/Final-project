@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit organisation profile</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'edit-organisation-profile.css' %}">
+</head>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}  
+    <!-- Organisation Form Fields -->
+    <h3>Organisation Details</h3>
+        <div class="form-group">
+            {{ organisation_form.as_p }}
+        </div>  
+    <button type="submit">Save Changes</button>
+</form>

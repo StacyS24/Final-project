@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ sender.username }}</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'chat.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Chat with {{ sender.username }}</h2>
+        <div class="messages" id="messages">
+            {% for msg in messages %}
+                <div class="message {% if msg.sender == user %}right{% else %}left{% endif %}">
+                    <p class="sender">{{ msg.sender.username }}:</p>
+                    <p>{{ msg.content }}</p>
+                    <span class="timestamp">{{ msg.timestamp }}
+                        {% if msg.sender == user and msg.read %} 
+                            <span class="read-status">✓✓</span>
+                        {% endif %}
+                    </span>
+                </div>
+            {% empty %}
+                <p>No messages yet.</p>
+            {% endfor %}
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <textarea class="message-input" name="content" placeholder="Type a message..." rows="3"></textarea>
+            <button type="submit" class="send-btn">Send Message</button>
+        </form>
+
+        <a href="{% url 'view_messages' %}" class="back-link">Back to Messages</a>
+    </div>
+
+    <script>
+        const messagesContainer = document.getElementById('messages');
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    </script>
+
+</body>
+</html>

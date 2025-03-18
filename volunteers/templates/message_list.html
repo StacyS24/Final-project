@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Messages</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'message-list.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Your Messages</h2>    
+        <ul class="conversations">
+            {% for conversation in conversations %}
+                <li class="conversation">
+                    <a href="{% url 'chat_with_sender' conversation.recipient.id %}" class="message-link">
+                        <div>
+                            <span class="sender">{{ conversation.recipient.username }}</span>
+                            <p class="last-message">{{ conversation.last_message.content }}</p>
+                        </div>
+                        <span class="timestamp">{{ conversation.last_message.timestamp }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <li>
+            {% if user.user_type == "organisation" %}
+                <a href="{% url 'organisation-profile' %}">Profile page</a>
+            {% else %}
+                <a href="{% url 'volunteer-profile' %}">Profile page</a>
+            {% endif %}
+        </li>
+    </div>
+
+</body>
+</html>

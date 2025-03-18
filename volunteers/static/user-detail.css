@@ -1,0 +1,83 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+h1{
+    color: white;
+}
+
+h2 {
+    color: #4CAF50;
+}
+
+p {
+    margin: 10px 0;
+}
+
+h1,h2,p {
+    margin: 20px;
+}
+
+a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+form {
+    margin-top: 20px;
+}
+
+form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+.organisation-logo {
+    margin: 10px 0;
+    width:100px;
+    height:150px;
+}
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-top: 20px;
+    margin-left: 20px;
+    border: 4px solid #2a9d8f;
+ 
+}
+
+.message-form {
+    margin-left: 20px;
+    
+}

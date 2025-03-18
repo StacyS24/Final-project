@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.username }}'s Profile</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'user-detail.css' %}">
+</head>
+<body>
+    <header>
+        <h1>{{ user.username }}'s Profile</h1>
+    </header>
+    <main>
+        {% if is_private %}
+            <p>This profile is private. Only limited information is visible.</p>
+            <p>Location: {{ user.location }}</p>
+        {% else %}
+            {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="profile-pic">
+            {% endif %}
+            <p><strong>Location:</strong> {{ user.location }}</p>
+            <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+
+            {% if user.user_type == 'volunteer' %}
+                <h2>Volunteer Information</h2>
+                <p><strong>Skills:</strong> {{ preferences.skills|join:", " }}</p>
+                <p><strong>Interests:</strong> {{ preferences.interests|join:", " }}</p>
+                <p><strong>Availability:</strong> {{ preferences.availability }}</p>
+                <p><strong>Hours Available:</strong> {{ preferences.hours_available }}</p>
+                <p><strong>Age Group:</strong> {{ preferences.age_group }}</p>
+                <p><strong>Languages:</strong> {{ preferences.languages|join:", " }}</p>
+            {% elif user.user_type == 'organisation' %}
+                <h2>Organisation Information</h2>
+                <p><strong>Organisation Name:</strong> {{ organisation.organisation_name }}</p>
+                <p><strong>Website:</strong> <a href="{{ organisation.website_url }}">{{ organisation.website_url }}</a></p>
+                <p><strong>Mission Statement:</strong> {{ organisation.mission_statement }}</p>
+                <p><strong>Organisation Size:</strong> {{ organisation.organisation_size }}</p>
+                <p><strong>Cause Categories:</strong> {{ organisation.cause_categories|join:", " }}</p>
+                {% if organisation.logo %}
+                    <img src="{{ organisation.logo.url }}" alt="{{ organisation.organisation_name }} Logo" class="organisation-logo">
+                {% else %}
+                    <p>No logo available</p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+        <h2>Send a Message to {{ user.username }}</h2>
+        <form method="post" action="{% url 'send_message' recipient_id=user.id %}" class="message-form">
+            {% csrf_token %}
+            <label for="id_recipient_name">Recipient Name:</label>
+            <input type="text" name="recipient_name" id="id_recipient_name" value="{{ user.username }}" readonly>
+            <div>{{ form.content }}</div>
+            <button type="submit">Send Message</button>
+        </form>
+    </main>
+    <footer>
+        <a href="{% url 'search_users' %}">Back to Home</a>
+    </footer>
+</body>
+</html>

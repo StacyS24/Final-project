@@ -1,0 +1,225 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0px;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #00796b;
+    padding: 0.01rem 1rem;
+    color: white;
+    font-size: larger;
+}
+
+.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar .logo span {
+    color: #e0f7fa;
+}
+
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.8rem;
+}
+
+p,h3,h2,h1 {
+    margin: 20px;
+}
+
+.navbar .nav-links li {
+    display: inline;
+}
+
+.navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar .nav-links a:hover {
+    text-decoration: underline;
+}
+
+.hero {
+    background: #00796b url('https://source.unsplash.com/1600x900/?volunteer') no-repeat center;
+    background-size: cover;
+    color: white;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+
+section h2 {
+    text-align: center;
+    color: #00796b;
+    margin: 2rem 0 1rem;
+}
+
+
+.opportunity-section {
+    padding: 2rem;
+}
+
+.opportunities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.opportunity-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+}
+
+.opportunity-card h3 {
+    margin: 0 0 0.5rem;
+    color: #00796b;
+}
+
+.opportunity-card p {
+    margin: 0.5rem 0;
+}
+
+.opportunity-card a,
+.opportunity-card button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    color: white;
+    background-color: #00796b;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.opportunity-card a:hover,
+.opportunity-card button:hover {
+    background-color: #004d40;
+}
+
+.opportunities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #00796b;
+    color: white;
+    margin-top: 2rem;
+}
+
+footer a {
+    color: #e0f7fa;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.search-container {
+    display: block;
+    margin-left: auto;
+    align-items: center;
+    background-color: #00796b;
+    padding: 10px;
+    z-index: 10;
+    border-radius: 8px;
+    position: relative;
+}
+
+.search-form input[type="text"] {
+    padding: 5px 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px; 
+    width: 200px; 
+    outline: none; 
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    background-color: #00796b;
+    border-radius: 8px;
+    color: white;
+}
+
+.search-button {
+    padding: 5px 15px;
+    font-size: 1rem;
+    color: white;
+    background-color: lightgreen;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+.results-list {
+    margin-top: 0px; 
+    list-style: disc; 
+    padding: 5px 20px; 
+    background-color: #00796b; 
+    color: white;
+    position: absolute; 
+    top: 100%; 
+    border-radius: 4px;
+    z-index: 1000;
+    max-width: 250px; 
+}
+
+.results-list li {
+    padding: 5px 0;
+}
+
+.results-list a {
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
+.results-list a:hover {
+    background-color: #00564d; 
+    border-radius: 4px;
+} 
+
+#all-opportunities {
+    display: block; 
+    text-align: center; 
+    margin-top: 1rem; 
+    text-decoration: none; 
+    color: #00796b; 
+    font-weight: bold;
+}

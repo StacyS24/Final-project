@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opportunity Details</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'opportunity-detail.css' %}">
+</head>
+<body>
+
+    <div class="opportunity-details">
+        <h1>{{ opportunity.title }}</h1>
+        <p><strong>Organization:</strong> <a href="{% url 'user_detail' opportunity.organisation.user.id %}">{{ opportunity.organisation.user.username }}</a></p>
+        <p><strong>Description:</strong> {{ opportunity.description }}</p>
+        <p><strong>Skills Required:</strong> {{ opportunity.skills_required|join:", " }}</p>
+        <p><strong>Contact Information:</strong> {{ opportunity.contact_info }}</p>
+        <p><strong>Location:</strong> {{ opportunity.location }}</p>
+        <p><strong>Street Address:</strong> {{ opportunity.street_address }}</p>
+        <p><strong>City:</strong> {{ opportunity.city }}</p>
+        <p><strong>Postcode:</strong> {{ opportunity.postcode }}</p>
+        <p><strong>County:</strong> {{ opportunity.county }}</p>
+        <p><strong>Country:</strong> {{ opportunity.country }}</p>
+        <p><strong>Date:</strong> {{ opportunity.date }}</p>
+        <p><strong>Duration:</strong> {{ opportunity.duration }}</p>
+        <p><strong>Commitment:</strong> {{ opportunity.commitment_level }}</p>
+        <p><strong>Remote:</strong> {{ opportunity.remote }}</p>
+
+        <!-- Profile Link -->
+        {% if user.user_type == "organisation" %}
+            <a href="{% url 'organisation-profile' %}">Profile</a>
+        {% else %}
+            <a href="{% url 'volunteer-profile' %}">Profile</a>
+        {% endif %}
+
+        <!-- Apply or Save Buttons for Volunteers -->
+        {% if user.user_type == "volunteer" %}
+            <form method="POST" action="{% url 'apply-opportunity' opportunity.id %}">
+                {% csrf_token %}
+                <button type="submit">
+                    {% if opportunity in user.applied_opportunities.all %}
+                        Withdraw Application
+                    {% else %}
+                        Apply Now
+                    {% endif %}
+                </button>
+            </form>
+            
+            <form method="POST" action="{% url 'save-opportunity' opportunity.id %}">
+                {% csrf_token %}
+                <button type="submit">
+                    {% if opportunity in user.saved_opportunities.all %}
+                        Unsave
+                    {% else %}
+                        Save for Later
+                    {% endif %}
+                </button>
+            </form>
+        {% endif %}
+
+        {% if user.user_type == "organisation" %}
+        <form method="POST" action="{% url 'delete-opportunity' opportunity.id %}" id = 'delete-button' onsubmit="return confirmDelete();">
+            {% csrf_token %}
+            <button type="submit" id = 'delete-opportunity'>
+                Delete Opportunity
+            </button>
+        </form>
+        <script>
+            function confirmDelete() {
+                return confirm("Are you sure you want to delete this opportunity? This action cannot be undone.");
+            }
+        </script>
+    {% endif %}
+
+        <!-- Volunteer List for Organisation -->
+        {% if user.user_type == "organisation" %}
+            <div class="volunteer-list">
+                <h2>Volunteers Who Applied</h2>
+                {% if applications %}
+                    <ul>
+                        {% for application in applications %}
+                            <li>
+                                <a href="{% url 'user_detail' application.user.id %}">{{ application.user.username }}</a> - {{ application.user.email }}
+                                <p>Status: {{ application.status }}</p>
+                                
+                                {% if application.status == "pending" %}
+                                    <form method="post" action="{% url 'confirm_volunteer' application.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit">Confirm Volunteer</button>
+                                    </form>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No volunteers have applied yet.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
+
+
+   
+  

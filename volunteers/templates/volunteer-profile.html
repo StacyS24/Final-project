@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Profile</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'volunteer-profile.css' %}">
+</head>
+<body>
+    <header>
+        <h1>{{ user.username }}'s Profile</h1>
+    </header>
+
+    <div class="profile-actions">
+        <a href="{% url 'edit-volunteer-profile' %}">Edit Profile</a>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'submit_testimonial' %}">Submit Testimonial</a>
+        <a href="{% url 'view_messages' %}">View Messages</a>
+        <a href="{% url 'log-out' %}">Log Out</a>
+    </div>
+
+ <div class="profile-container">
+    <div class="profile-picture">
+        {% if user.profile_picture %}
+            <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="profile-pic">
+        {% else %}
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' stroke='black' stroke-width='3' fill='%23e0e0e0' /%3E%3C/svg%3E" alt="Profile Placeholder" class="profile-pic">
+        {% endif %}
+        <form method="POST" enctype="multipart/form-data" action="{% url 'upload-profile-picture' %}">
+            {% csrf_token %}
+            <label for="profile-pic" class="upload-btn">Change Picture</label>
+            <input type="file" id="profile-pic" name="profile_picture" accept="image/*" onchange="this.form.submit()" hidden>
+        </form>
+    </div>
+    {% if badges %}
+    <div class="badges-container">
+        <h2 class="achievements-title">Achievements</h2>
+        <div class="badges-list">
+            {% for awarded_badge in badges %}
+                <div class="badge-item">
+                    <img src="{{ awarded_badge.badge.image.url }}" alt="{{ awarded_badge.badge.name }}" class="badge-icon">
+                    <p class="badge-name">{{ awarded_badge.badge.name }}</p>
+                    <p class="badge-description">{{ awarded_badge.badge.description }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+ </div>
+
+    <main>
+        <h2>Profile Information</h2>
+        <p><strong>Full Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+        <p><strong>Location:</strong> {{ user.location }}</p>
+
+            <h2>Preferences</h2>
+            <div class="preferences-list">
+                <div class="preference-item">
+                    <strong id = 'skills'>Skills:</strong>
+                    <div class="preference-tags">
+                        {% for skill in skills %}
+                            <span class="preference-tag">{{ skill}}</span>
+                        {% empty %}
+                            <span class="no-data">No skills added</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="preference-item">
+                    <strong id = 'interests'>Interests:</strong>
+                    <div class="preference-tags">
+                        {% for interest in interests %}
+                            <span class="preference-tag">{{ interest }}</span>
+                        {% empty %}
+                            <span class="no-data">No interests added</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="preference-item">
+                <p class="badge" ><strong>Availability:</strong> {{ availability }}</p>
+                <p><strong>Hours Available:</strong> <span class="badge">{{ hours_available }}</span></p>
+                <p><strong>Age Group:</strong> <span class="badge">{{ age_group|cut:"_"|capfirst }}</span></p>
+                <p><strong>Languages:</strong> <span class="badge">{{ languages|join:", "|title }}</span></p>
+            </div>
+        </div>
+
+        <h2 id = 'recommended-opportunties'>Recommended Opportunities</h2>
+        <div class="recommendations">
+            {% if recommendations %}
+                {% for rec in recommendations %}
+                    <div class="recommendation">
+                        <h3><a href="{% url 'opportunity-detail' rec.id %}">{{ rec.title }}</a></h3>
+                        <p><strong>Description:</strong> {{ rec.description }}</p>
+                        <p><strong>Skills Required:</strong> {{ rec.skills_required }}</p>
+                        <p><strong>Location:</strong> {{ rec.location }}</p>
+                        <p><strong>Commitment Level:</strong> {{ rec.commitment_level }}</p>
+                        <p><strong>Remote:</strong> {{ rec.remote|yesno:"Yes,No" }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No recommendations available at the moment. Please update your preferences or check back later.</p>
+            {% endif %}
+        </div>
+    </div>
+   
+    <h2>See what users with similar profiles have liked</h2>
+    <div class="recommendations">
+        {% for recommendation in collaborative_recommendations %}
+            <div class="recommendation">
+                <h3><a href="{% url 'opportunity-detail' recommendation.id %}">{{ recommendation.title }}</a></h3>
+                <p><strong>Description:</strong> {{ recommendation.description }}</p>
+                <p><strong>Skills Required:</strong> {{ recommendation.skills_required }}</p>
+                <p><strong>Location:</strong> {{ recommendation.location }}</p>
+                <p><strong>Commitment Level:</strong> {{ recommendation.commitment_level }}</p>
+                <p><strong>Remote:</strong> {{ recommendation.remote|yesno:"Yes,No" }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2>Saved Opportunities</h2>
+    <div class = 'saved-opportunities'>  
+    {% if saved_opportunities %}
+        {% for opportunity in saved_opportunities %}
+            <div class="saved-opportunity">
+            <a href="{% url 'opportunity-detail' opportunity.id %}"><h3>{{ opportunity.title }}</h3></a>
+            <p>{{ opportunity.description }}</p>
+            <p><strong>Location:</strong> {{ opportunity.location }}</p>
+            <p><strong>Date:</strong> {{ opportunity.date }}</p>
+            <p><strong>Commitment Level:</strong> {{ opportunity.commitment_level }}</p>
+            <p><strong>Remote:</strong> {{ opportunity.remote|yesno:"Yes,No" }}</p>
+            <a href="https://www.google.com/maps?q={{ item.opportunity.latitude }},{{ item.opportunity.longitude }}" target="_blank" 
+            onclick = update_opportunities_with_coordinates(item.opportunity.opportunity_id) >View on Map</a>
+            <div class="button-group">
+            <!-- Save/Unsave form -->
+            <form method="POST" action="{% url 'save-opportunity' opportunity.id %}">
+              {% csrf_token %}
+              <button type="submit">
+                  {% if opportunity in user.saved_opportunities.all %}
+                      Unsave
+                  {% else %}
+                      Save for Later
+                  {% endif %}
+              </button>
+            </form>
+    
+            <!-- Apply/Withdraw form -->
+            <form method="POST" action="{% url 'apply-opportunity' opportunity.id %}">
+              {% csrf_token %}
+              <button type="submit">
+                  {% if opportunity in user.applied_opportunities.all %}
+                      Withdraw Application
+                  {% else %}
+                      Apply Now
+                  {% endif %}
+              </button>
+            </div>
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+      <p>No saved opportunities yet.</p>
+    {% endif %}
+</div> 
+
+    
+<h2>Applied Opportunities</h2>
+<div class="applied-opportunities"> 
+    {% if applied_opportunities %}
+        {% for item in applied_opportunities %}     
+            <div class="applied-opportunity"> 
+                <a href="{% url 'opportunity-detail' item.opportunity.id %}"> <h3>{{ item.opportunity.title }}</h3></a>
+                <p>{{ item.opportunity.description }}</p>
+                <p><strong>Location:</strong> {{ item.opportunity.location }}</p>
+                <p><strong>Date:</strong> {{ item.opportunity.date }}</p>
+                <p><strong>Commitment Level:</strong> {{ item.opportunity.commitment_level }}</p>
+                <p><strong>Remote:</strong> {{ item.opportunity.remote|yesno:"Yes,No" }}</p>
+                <p><strong>Status:</strong> {{ item.status }}</p>
+                <h3><a href="{% url 'opportunity-detail' item.opportunity.id %}">See more</a></h3>
+                {% if item.opportunity.latitude and item.opportunity.longitude %}
+                    <a href="https://www.google.com/maps?q={{ item.opportunity.latitude }},{{ item.opportunity.longitude }}" target="_blank" 
+                    onclick = update_opportunities_with_coordinates(item.opportunity.opportunity_id) >View on Map</a>
+                {% else %}
+                    <p>Location not available</p>
+                {% endif %}
+                <div class="button-group">
+                    <form method="POST" action="{% url 'save-opportunity' item.opportunity.id %}">
+                        {% csrf_token %}
+                        <button type="submit">
+                            {% if item.opportunity in user.saved_opportunities.all %}
+                                Unsave
+                            {% else %}
+                                Save for Later
+                            {% endif %}
+                        </button>
+                    </form>
+                    <form method="POST" action="{% url 'apply-opportunity' item.opportunity.id %}">
+                        {% csrf_token %}
+                        <button type="submit">
+                            {% if item.opportunity in user.applied_opportunities.all %}
+                                Withdraw Application
+                            {% else %}
+                                Apply Now
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>         
+            </div>
+        {% endfor %}   
+    {% else %}
+        <p>No applied opportunities yet.</p>
+    {% endif %}
+</div>
+
+<div class="notification">
+    <h2>Notifications</h2>
+    <ul>
+        {% for notification in notifications %}
+            <li>
+                {{ notification.message }}
+                <a href="{% url 'mark_notification_as_read' notification.id %}">Mark as read</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% if not notifications%}
+    <p> No new notifications</p>
+    {%endif%}
+</div>
+</body>
+</html>

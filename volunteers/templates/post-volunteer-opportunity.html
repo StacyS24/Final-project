@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Volunteer Opportunity</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'post-volunteer-opportunity.css' %}">
+    
+</head>
+
+<body>
+    <h1>Post a New Volunteer Opportunity</h1>   
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Post Opportunity</button>
+    </form>
+</body>
+</html>

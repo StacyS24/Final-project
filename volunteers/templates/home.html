@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Platform</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <a href="{% url 'home' %}" class="logo">Volunteer<span>Platform</span></a>
+            <div class="search-container">
+                <form method="get" action="{% url 'search_users' %}" class="search-form">
+                    {{ form.as_p }}
+                    <button type="submit" class="search-button">Search</button>
+                </form>  
+                <ul class="results-list">
+                    {% if results %}
+                        {% for user in results %}
+                            <li>
+                                <a href="{% url 'user_detail' user.id %}">{{ user.username }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'testimonial_list' %}">Testimonials</a></li>
+                <li><a href="{% url 'urgent_opportunities' %}">Urgent Opportunities</a></li>
+                <li>
+                    {% if user.user_type == "organisation" %}
+                        <a href="{% url 'organisation-profile' %}">Profile</a>
+                    {% else %}
+                        <a href="{% url 'volunteer-profile' %}">Profile</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Make a Difference, One Step at a Time</h1>
+            <p>Join our community of passionate volunteers and dedicated organizations. Together, we can bring positive change.</p>
+
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="container">
+            <h2>About Us</h2>
+            <p>Our platform connects volunteers with organizations, fostering opportunities to make a meaningful impact in communities worldwide. Whether you're looking to contribute your skills, find local opportunities, or recruit volunteers for a cause, we provide the resources you need.</p>
+        </div>
+    </section>
+
+    <section class="featured-causes">
+        <div class="container">
+            <h2>Featured Causes</h2>
+            <div class="causes-grid">
+                <div class="cause-card">
+                    <h3>Environmental Conservation</h3>
+                    <p>Join organizations working to preserve our planet. From clean-up drives to awareness campaigns, your contribution counts.</p>
+                </div>
+                <div class="cause-card">
+                    <h3>Community Development</h3>
+                    <p>Support initiatives that strengthen communities, promote local resources, and improve social welfare.</p>
+                </div>
+                <div class="cause-card">
+                    <h3>Education & Literacy</h3>
+                    <p>Help provide educational resources and tutoring for underprivileged children and adults in need.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <h2>Volunteer Opportunities</h2>
+    <section class="opportunity-section">
+        {% if opportunities %}
+        <div class="opportunities-grid">
+            {% for opportunity in opportunities|slice:":3" %}
+            <div class="opportunity-card">
+                <h3>{{ opportunity.title }}</h3>
+                <p><strong>Organization:</strong> {{ opportunity.organisation.user.username }}</p>
+                <p><strong>Location:</strong> {{ opportunity.location }}{% if opportunity.remote %} (Remote){% endif %}</p>
+                <p><strong>Date:</strong> {{ opportunity.date }}</p>
+                <p><strong>Duration:</strong> {{ opportunity.duration }}</p>
+                <p><strong>Commitment Level:</strong> {{ opportunity.commitment_level }}</p>
+                <p><strong>Description:</strong> {{ opportunity.description|truncatewords:20 }}</p>
+    
+                <!-- Actions -->
+                <a href="{% url 'opportunity-detail' opportunity.id %}">View Details</a>
+                {% if user.is_authenticated and user.user_type == 'volunteer' %}
+                    <form method="POST" action="{% url 'save-opportunity' opportunity.id %}">
+                        {% csrf_token %}
+                        <button type="submit">
+                            {% if opportunity in user.saved_opportunities.all %}
+                                Unsave
+                            {% else %}
+                                Save for Later
+                            {% endif %}
+                        </button>
+                    </form>
+                    <form method="POST" action="{% url 'apply-opportunity' opportunity.id %}">
+                        {% csrf_token %}
+                        <button type="submit">
+                            {% if opportunity in user.applied_opportunities.all %}
+                                Withdraw Application
+                            {% else %}
+                                Apply Now
+                            {% endif %}
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        <a id = 'all-opportunities' href="{% url 'all_oppourtunities' %}">See all</a>
+        {% else %}
+        <p>No volunteer opportunities posted yet.</p>
+        {% endif %}
+    </section>
+    
+    <footer>
+        <p>&copy; {{ year }} Volunteer Platform. All rights reserved.</p>
+        <p>Follow us on:
+            <a href="#">Twitter</a> |
+            <a href="#">Facebook</a> |
+            <a href="#">Instagram</a>
+        </p>
+    </footer>
+</body>
+</html>

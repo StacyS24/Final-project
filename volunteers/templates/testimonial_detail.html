@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonial Detail</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'testimonial-detail.css' %}">
+</head>
+<body>
+    <div class="testimonial-detail">
+        <h1>Testimonial Detail</h1>    
+        <div class="testimonial-card">
+            <div class="user-info">
+                {% if testimonial.user.profile_picture %}
+                    <img src="{{ testimonial.user.profile_picture.url }}" alt="Profile Picture" class="profile-pic">
+                {% endif %} 
+                <strong>{{ testimonial.user.username }}</strong> ({{ testimonial.created_at|date:"F j, Y" }}):
+            </div>
+            <div>                
+                {% if testimonial.image %} 
+                    <img src="{{ testimonial.image.url }}" alt="Testimonial Image" />
+                {% endif %}
+                <p>{{ testimonial.text }}</p>
+
+                <div class="like-count">
+                    Likes: {{ testimonial.likes.count }}
+                </div>
+                <form method="POST" action="{% url 'like_testimonial' testimonial.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="like-button">
+                        {% if user in testimonial.likes.all %}
+                            <i class="fas fa-thumbs-down"></i>
+                        {% else %}
+                            <i class="fas fa-thumbs-up"></i>
+                        {% endif %}
+                    </button>
+                </form>
+            </div>          
+
+        </div>
+    
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h3>Comments</h3>
+            {% for comment in testimonial.comments.all %}
+            <div class="comment">
+                {% if comment.user.profile_picture %}
+                    <img src="{{ comment.user.profile_picture.url }}" alt="Profile Picture" class="profile-pic">
+                {% endif %}
+                <div>
+                    <strong id="comment-username">{{ comment.user.username }}</strong> ({{ comment.created_at|date:"F j, Y" }}):
+                    <p>{{ comment.text }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <div class="comment-form">
+                <form method="POST" action="{% url 'add-comment' testimonial.id %}">
+                    {% csrf_token %}
+                    <textarea name="comment_text" rows="4" placeholder="Add a comment..."></textarea>
+                    <button type="submit">Submit Comment</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Report button -->
+        <form method="POST" action="{% url 'report_testimonial' testimonial.id %}">
+            {% csrf_token %}
+            <button type="submit" class="report-button">Report</button>
+        </form>
+
+        <div class="back-button">
+            <a href="{% url 'testimonial_list' %}">Back to Testimonials</a>
+        </div>
+    </div>
+
+</body>
+</html>

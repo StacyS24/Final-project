@@ -1,0 +1,119 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #e0f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 60%;
+    max-width: 800px;
+    background-color: #fafafa;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 150px;      
+}
+
+h2 {
+    text-align: center;
+    color: #00796b;
+    font-size: 1.8rem;
+}
+
+.messages {
+    max-height: 500px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.message {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #e8f5e9;
+    border-radius: 4px;
+    max-width: 80%;
+}
+
+.message.left {
+    margin-left: 0;
+    margin-right: auto;
+    background-color: #e8f5e9;
+}
+
+.message.right {
+    margin-left: auto;
+    margin-right: 0;
+    background-color: #a5d6a7;
+}
+
+.message p {
+    margin: 0;
+}
+
+.message .sender {
+    font-weight: bold;
+    color: #00796b;
+}
+
+.message .timestamp {
+    font-size: 0.85rem;
+    color: #888;         
+}
+
+.message-input {
+    width: 95%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.send-btn {
+    background-color: #00796b;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.send-btn:hover {
+    background-color: #004d40;
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1rem;
+    text-decoration: none;
+    color: #00796b;
+}
+
+.back-link:hover {
+    color: #004d40;
+}
+
+.message .read-status {
+    font-size: 0.8rem;
+    color: #00796b;
+    float: right;
+}
+
+.message .timestamp {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 4px;
+    display: block;
+}

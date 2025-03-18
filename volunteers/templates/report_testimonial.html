@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Testimonial</title>
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'report-testimonial.css' %}">
+</head>
+<body>
+    <div class="report-container">
+        <h1>Report Testimonial</h1>
+        <form method="POST" action="{% url 'report_testimonial' testimonial.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="reason">Reason for reporting:</label>
+                <textarea id="reason" name="reason" rows="4" placeholder="Describe the issue..."></textarea>
+            </div>
+            <button type="submit" class="report-button">Report</button>
+        </form>
+    </div>
+</body>
+</html>
+
