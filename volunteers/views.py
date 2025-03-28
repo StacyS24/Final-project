@@ -23,6 +23,7 @@ from .forms import *
 from .models import *
 import os
 import requests
+from dotenv import load_dotenv
 # Create your views here.
 
 def signup(request):
@@ -739,7 +740,8 @@ def mark_notification_as_read(request, notification_id):
     else:
         return redirect('volunteer-profile')
 
-
+load_dotenv()
+API_KEY = os.getenv("GOOGLE_API_KEY")
 def get_coordinates(address):
     """
     This function takes an address as input, makes a request to the Google Geocoding API to retrieve the coordinates
@@ -751,7 +753,7 @@ def get_coordinates(address):
     Returns:
     tuple: A tuple containing the latitude and longitude if the request is successful, otherwise (None, None).
     """
-    api_key = 'AIzaSyC7NDtk1AZDlnvNh1pcnX1yMRb7HMADE88'  
+    api_key = os.getenv("GOOGLE_API_KEY")
     url = f'https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={api_key}'
     
     response = requests.get(url)
