@@ -26,12 +26,7 @@ import requests
 from dotenv import load_dotenv
 from .sample_data import sample_data
 # Create your views here.
-
-
-if not User.objects.exists() and not Organisation.objects.exists() and not VolunteerOpportunity.objects.exists():
-    sample_data()
-
-
+sample_data()
 def signup(request):
     """
     This view handles the signup process for any user.
