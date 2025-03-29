@@ -86,7 +86,12 @@ def sample_data():
     VolunteerPreferences.objects.create(user=user2, skills=["Event Management", "Teamwork"], interests=["Community Service", "Food Distribution"], availability="Evenings", hours_available="5 hours", age_group="26-35", languages=["English"])
 
     # Create a badge and award it to a volunteer
-    badge = Badges.objects.create(name="Top Volunteer", description="Awarded for outstanding contributions", image="badge.png")
+    badge = Badges.objects.create(name="First impression", description="Leave one testimonial", image="badges/First_impression_badge.png")
+    badge = Badges.objects.create(name="Lifesaver", description="Awarded for outstanding contributions", image="badges/Lifesaver_badge.png")
+    badge = Badges.objects.create(name="Opportunity seeker", description="Apply for 1 opportunity", image="badges/Opportunity_seeker_badge.png")
+    badge = Badges.objects.create(name="Opportunity volunteer", description="Apply for 5 opportunities", image="badges/Opportunity_volunteer_badge.png")
+    badge = Badges.objects.create(name="Reviwer", description="Leave 3 testimonials", image="badges/Reviewer_badge.png")
+    badge = Badges.objects.create(name="Top contributer", description="Leave 10 testimonials", image="badges/Top_contributer_badge.png")
     AwardBadge.objects.create(volunteer=user1, badge=badge)
 
     
