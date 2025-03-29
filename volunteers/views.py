@@ -24,8 +24,9 @@ from .models import *
 import os
 import requests
 from dotenv import load_dotenv
+from .sample_data import sample_data
 # Create your views here.
-
+sample_data()
 def signup(request):
     """
     This view handles the signup process for any user.
