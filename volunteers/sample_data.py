@@ -2,6 +2,8 @@ from .models import *
 from django.utils import timezone
 
 def sample_data():
+    if User.objects.exists() or Organisation.objects.exists() or VolunteerOpportunity.objects.exists():
+        return
     # Create sample volunteer users
     user1 = User.objects.create_user(username='volunteer1', password='password', user_type='volunteer', location='London', postcode='E1 6AN')
     user2 = User.objects.create_user(username='volunteer2', password='password', user_type='volunteer', location='Manchester', postcode='M1 1AA')
