@@ -1,4 +1,14 @@
-from .models import *
+import os
+import django
+
+# Set the default Django settings module
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'volunteers.settings')
+
+# Setup Django
+django.setup()
+
+# Now you can import your models and use them
+from volunteers.models import *
 from django.utils import timezone
 
 def sample_data():
@@ -95,5 +105,9 @@ def sample_data():
     badge = Badges.objects.create(name="Reviwer", description="Leave 3 testimonials", image="badges/Reviewer_badge.png")
     badge = Badges.objects.create(name="Top contributer", description="Leave 10 testimonials", image="badges/Top_contributer_badge.png")
     AwardBadge.objects.create(volunteer=user1, badge=badge)
+
+    
+if __name__ == "__main__":
+    sample_data()
 
     
