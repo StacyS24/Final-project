@@ -38,6 +38,9 @@ def build_interaction_matrix():
     applications = VolunteerApplications.objects.all()
     data = pd.DataFrame(list(applications.values('user_id', 'opportunity_id')))
 
+    if data.empty or 'user' not in data.columns or 'opportunity_id' not in data.columns:
+        return pd.DataFrame(index=users, columns=opportunities).fillna(0)
+
     # Build the interaction matrix
     interaction_matrix = data.pivot_table(index='user_id', columns='opportunity_id', aggfunc='size', fill_value=0)
 
@@ -65,6 +68,8 @@ def compute_similarity(users_skills, users_location, opportunities_skills, oppor
 
     # Precompute opportunity skills matrix
     opportunity_skills_text = [" ".join(skills) for skills in opportunities_skills.values()]
+    if not any(opportunity_skills_text):
+        return np.zeros(len(opportunities_skills))
     opportunity_skills_matrix = cache.get('opportunity_skills_matrix')
     if opportunity_skills_matrix is None:
         opportunity_skills_matrix = vectorizer.fit_transform(opportunity_skills_text)
@@ -73,11 +78,15 @@ def compute_similarity(users_skills, users_location, opportunities_skills, oppor
         vectorizer.fit(opportunity_skills_text)
     
     user_skills_text = " ".join(users_skills[users.id])
+    if not any(user_skills_text):
+        return np.zeros(len(users_skills))
     user_skills_matrix = vectorizer.transform([user_skills_text])
     skills_similarity = cosine_similarity(user_skills_matrix, opportunity_skills_matrix)
     
     # Add user interests to similarity score
     user_interests_text = " ".join(user_interests[users.id])
+    if not any(user_interests_text):
+        return np.zeros(len(user_interests))
     if user_interests_text:
         user_interests_matrix = vectorizer.transform([user_interests_text])
         interest_similarity = cosine_similarity(user_interests_matrix, opportunity_skills_matrix)
@@ -133,6 +142,9 @@ def recommend_collaborative(user_id, interaction_matrix, opportunities, top_n=3)
     if user_id not in interaction_matrix.index:
         raise ValueError(f"user_id {user_id} not found in interaction matrix")
     
+    if interaction_matrix.shape[0] == 0 or interaction_matrix.shape[1] == 0:
+        return []  # No recommendations if there's no data
+    
     # Recompute user similarity matrix if the matrix size has changed
     expected_size = interaction_matrix.shape[0]
     user_similarity = cache.get('user_similarity')
@@ -167,3 +179,4 @@ def recommend_collaborative(user_id, interaction_matrix, opportunities, top_n=3)
         for opp_id in recommended_opportunity_ids if opp_id in opportunity_lookup
     ]
     return collaborative_recommendations
+
